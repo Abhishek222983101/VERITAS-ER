@@ -23,8 +23,8 @@ export default function VerifyPage() {
     <div className="min-h-screen bg-cream font-mono bg-noise">
       <div className="fixed inset-0 bg-dot-pattern opacity-[0.06] pointer-events-none z-0" />
 
-      <div className="relative z-10 px-6 md:px-12 py-12">
-        <div className="max-w-3xl mx-auto space-y-8">
+      <div className="relative z-10 py-12">
+        <div className="mx-auto w-[95%] max-w-3xl space-y-8">
           <div className="text-center">
             <GradientHeading variant="solana" size="xl" className="mb-4">
               VERIFY YOUR IDENTITY

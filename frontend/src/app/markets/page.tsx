@@ -33,8 +33,8 @@ export default function MarketsPage() {
 
       <div className="relative z-10">
         {/* Header Bar */}
-        <div className="bg-black text-white px-6 md:px-12 py-4 border-brutal-b">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="bg-black text-white py-4 border-brutal-b">
+          <div className="mx-auto w-[95%] max-w-7xl flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-4">
               <BarChart3 className="w-6 h-6 text-solana-green" strokeWidth={3} />
               <h1 className="font-heading text-2xl md:text-3xl font-black uppercase tracking-tighter">
@@ -62,8 +62,8 @@ export default function MarketsPage() {
         </div>
 
         {/* Category Filters */}
-        <div className="px-6 md:px-12 py-4 border-brutal-b bg-white/50">
-          <div className="max-w-7xl mx-auto flex items-center gap-2 overflow-x-auto">
+        <div className="py-4 border-brutal-b bg-white/50">
+          <div className="mx-auto w-[95%] max-w-7xl flex items-center gap-2 overflow-x-auto">
             <Filter className="w-4 h-4 text-black/40 shrink-0" />
             {categories.map((cat) => (
               <button
@@ -82,8 +82,8 @@ export default function MarketsPage() {
         </div>
 
         {/* Market Grid */}
-        <div className="px-6 md:px-12 py-8">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="py-8">
+          <div className="mx-auto w-[95%] max-w-7xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((market) => {
               const style = STATUS_STYLES[market.status] || STATUS_STYLES.active;
               return (

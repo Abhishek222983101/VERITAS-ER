@@ -39,7 +39,8 @@ export default function AgentProfilePage() {
       <div className="fixed inset-0 bg-dot-pattern opacity-[0.06] pointer-events-none z-0" />
 
       <div className="relative z-10">
-        <div className="bg-black text-white px-6 md:px-12 py-3 border-brutal-b flex items-center justify-between">
+        <div className="bg-black text-white py-3 border-brutal-b">
+          <div className="mx-auto w-[95%] max-w-7xl flex items-center justify-between">
           <Link href="/oracle" className="flex items-center gap-3 hover:text-lime-green transition-colors">
             <ArrowLeft className="w-5 h-5" strokeWidth={3} />
             <span className="font-heading font-black uppercase tracking-tighter">Oracle</span>
@@ -52,10 +53,11 @@ export default function AgentProfilePage() {
           }`}>
             {agent.status}
           </span>
+          </div>
         </div>
 
-        <div className="px-6 md:px-12 py-8">
-          <div className="max-w-5xl mx-auto space-y-6">
+        <div className="py-8">
+          <div className="mx-auto w-[95%] max-w-5xl space-y-6">
             {/* Agent Header */}
             <div className="bg-white border-brutal shadow-brutal p-6 md:p-8">
               <div className="flex items-center gap-6 mb-6">

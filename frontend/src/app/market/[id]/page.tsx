@@ -57,7 +57,8 @@ export default function MarketDetailPage() {
 
       <div className="relative z-10">
         {/* Top Bar */}
-        <div className="bg-black text-white px-6 md:px-12 py-3 border-brutal-b flex items-center justify-between">
+        <div className="bg-black text-white py-3 border-brutal-b">
+          <div className="mx-auto w-[95%] max-w-7xl flex items-center justify-between">
           <Link href="/markets" className="flex items-center gap-3 hover:text-lime-green transition-colors">
             <ArrowLeft className="w-5 h-5" strokeWidth={3} />
             <span className="font-heading font-black uppercase tracking-tighter">Back</span>
@@ -74,11 +75,12 @@ export default function MarketDetailPage() {
             }`}>
               {market.status}
             </span>
+           </div>
           </div>
         </div>
 
-        <div className="px-6 md:px-12 py-8">
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="py-8">
+          <div className="mx-auto w-[95%] max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Market Info + Trading */}
             <div className="lg:col-span-2 space-y-6">
               {/* Question */}
