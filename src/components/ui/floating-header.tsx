@@ -11,9 +11,10 @@ export function FloatingHeader() {
   const [open, setOpen] = React.useState(false);
 
   const links = [
-    { label: 'Technology', href: '#technology' },
-    { label: 'Features', href: '#features' },
-    { label: 'About', href: '#about' },
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Pipeline', href: '/pipeline' },
+    { label: 'Results', href: '/results' },
+    { label: 'AI Chat', href: '/chat' },
   ];
 
   return (
@@ -41,8 +42,8 @@ export function FloatingHeader() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/simulator">
-            <Button size="lg" variant="default" className="hidden lg:flex text-lg border-2 h-14 px-8">Try Simulator</Button>
+          <Link href="/pipeline">
+            <Button size="lg" variant="default" className="hidden lg:flex text-lg border-2 h-14 px-8">Run Pipeline</Button>
           </Link>
           <Sheet open={open} onOpenChange={setOpen}>
             <Button
@@ -80,8 +81,8 @@ export function FloatingHeader() {
                 ))}
               </div>
               <SheetFooter className="gap-4">
-                <Link href="/simulator" className="w-full" onClick={() => setOpen(false)}>
-                  <Button className="w-full" size="lg">Run Live Demo</Button>
+                <Link href="/pipeline" className="w-full" onClick={() => setOpen(false)}>
+                  <Button className="w-full" size="lg">Run Pipeline</Button>
                 </Link>
               </SheetFooter>
             </SheetContent>

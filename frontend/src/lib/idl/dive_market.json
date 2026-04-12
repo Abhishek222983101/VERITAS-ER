@@ -1,0 +1,1251 @@
+{
+  "address": "8EYYww8fBe2bXZaVsyce6XMjt3bt8R2ih2JyEa4A1V3v",
+  "metadata": {
+    "name": "dive_market",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "DIVE-Solana market core"
+  },
+  "instructions": [
+    {
+      "name": "claim_payout",
+      "discriminator": [
+        127,
+        240,
+        132,
+        62,
+        227,
+        198,
+        146,
+        133
+      ],
+      "accounts": [
+        {
+          "name": "claimer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.question_hash",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "winning_mint",
+          "writable": true
+        },
+        {
+          "name": "claimant_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "share_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "delegate_market",
+      "discriminator": [
+        223,
+        125,
+        110,
+        148,
+        99,
+        176,
+        143,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "buffer_market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  117,
+                  102,
+                  102,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                107,
+                122,
+                8,
+                155,
+                80,
+                35,
+                161,
+                82,
+                165,
+                166,
+                166,
+                15,
+                152,
+                202,
+                200,
+                139,
+                254,
+                159,
+                5,
+                22,
+                20,
+                127,
+                203,
+                122,
+                7,
+                122,
+                89,
+                154,
+                216,
+                227,
+                163,
+                201
+              ]
+            }
+          }
+        },
+        {
+          "name": "delegation_record_market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "delegation_metadata_market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  108,
+                  101,
+                  103,
+                  97,
+                  116,
+                  105,
+                  111,
+                  110,
+                  45,
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ],
+            "program": {
+              "kind": "account",
+              "path": "delegation_program"
+            }
+          }
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.question_hash",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "owner_program",
+          "address": "8EYYww8fBe2bXZaVsyce6XMjt3bt8R2ih2JyEa4A1V3v"
+        },
+        {
+          "name": "delegation_program",
+          "address": "DELeGGvXpWV2fqJUhqcF5ZSYMS4JTLjteaAMARRSaeSh"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "dispute_market",
+      "discriminator": [
+        141,
+        181,
+        103,
+        68,
+        255,
+        237,
+        53,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "challenger",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.question_hash",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "bond_amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "initialize_market",
+      "discriminator": [
+        35,
+        35,
+        189,
+        193,
+        155,
+        48,
+        170,
+        203
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "question_hash"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "yes_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  121,
+                  101,
+                  115,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "no_mint",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  110,
+                  111,
+                  95,
+                  109,
+                  105,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "question_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "question",
+          "type": "string"
+        },
+        {
+          "name": "outcomes",
+          "type": {
+            "vec": "string"
+          }
+        },
+        {
+          "name": "deadline_ts",
+          "type": "i64"
+        },
+        {
+          "name": "bond_amount",
+          "type": "u64"
+        },
+        {
+          "name": "oracle_authority",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "place_bet",
+      "discriminator": [
+        222,
+        62,
+        67,
+        220,
+        63,
+        166,
+        126,
+        33
+      ],
+      "accounts": [
+        {
+          "name": "bettor",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "human_attestation",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  104,
+                  117,
+                  109,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "bettor"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                94,
+                190,
+                28,
+                190,
+                198,
+                182,
+                231,
+                179,
+                29,
+                219,
+                148,
+                149,
+                28,
+                96,
+                155,
+                9,
+                57,
+                2,
+                93,
+                236,
+                15,
+                44,
+                136,
+                17,
+                248,
+                153,
+                230,
+                16,
+                141,
+                90,
+                22,
+                208
+              ]
+            }
+          }
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.question_hash",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "yes_mint",
+          "writable": true
+        },
+        {
+          "name": "no_mint",
+          "writable": true
+        },
+        {
+          "name": "user_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": {
+            "defined": {
+              "name": "OutcomeSide"
+            }
+          }
+        },
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "process_undelegation",
+      "discriminator": [
+        196,
+        28,
+        41,
+        206,
+        48,
+        37,
+        51,
+        167
+      ],
+      "accounts": [
+        {
+          "name": "base_account",
+          "writable": true
+        },
+        {
+          "name": "buffer"
+        },
+        {
+          "name": "payer",
+          "writable": true
+        },
+        {
+          "name": "system_program"
+        }
+      ],
+      "args": [
+        {
+          "name": "account_seeds",
+          "type": {
+            "vec": "bytes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "resolve_market",
+      "discriminator": [
+        155,
+        23,
+        80,
+        173,
+        46,
+        74,
+        23,
+        239
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.question_hash",
+                "account": "Market"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "outcome",
+          "type": {
+            "defined": {
+              "name": "OutcomeSide"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "undelegate_market",
+      "discriminator": [
+        22,
+        56,
+        12,
+        119,
+        64,
+        238,
+        106,
+        106
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "market",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  109,
+                  97,
+                  114,
+                  107,
+                  101,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market.question_hash",
+                "account": "Market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "magic_program",
+          "address": "Magic11111111111111111111111111111111111111"
+        },
+        {
+          "name": "magic_context",
+          "writable": true,
+          "address": "MagicContext1111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "HumanAttestation",
+      "discriminator": [
+        211,
+        171,
+        68,
+        164,
+        35,
+        78,
+        18,
+        177
+      ]
+    },
+    {
+      "name": "Market",
+      "discriminator": [
+        219,
+        190,
+        213,
+        55,
+        0,
+        227,
+        198,
+        154
+      ]
+    },
+    {
+      "name": "Vault",
+      "discriminator": [
+        211,
+        8,
+        232,
+        43,
+        2,
+        152,
+        117,
+        119
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "EmptyQuestionHash",
+      "msg": "Question hash cannot be empty"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidOutcomeCount",
+      "msg": "Exactly two outcomes are required"
+    },
+    {
+      "code": 6002,
+      "name": "QuestionTooLong",
+      "msg": "Market question is too long"
+    },
+    {
+      "code": 6003,
+      "name": "OutcomeTooLong",
+      "msg": "Outcome label is too long"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidDeadline",
+      "msg": "Market deadline must be in the future"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidAmount",
+      "msg": "Amount must be greater than zero"
+    },
+    {
+      "code": 6006,
+      "name": "AttestationExpired",
+      "msg": "Attestation expired"
+    },
+    {
+      "code": 6007,
+      "name": "AttestationRevoked",
+      "msg": "Attestation revoked"
+    },
+    {
+      "code": 6008,
+      "name": "MarketNotDelegated",
+      "msg": "Market is not delegated to Ephemeral Rollups"
+    },
+    {
+      "code": 6009,
+      "name": "MarketNotActive",
+      "msg": "Market is not active"
+    },
+    {
+      "code": 6010,
+      "name": "MarketClosed",
+      "msg": "Market trading window has closed"
+    },
+    {
+      "code": 6011,
+      "name": "MarketUnresolved",
+      "msg": "Market has not been resolved"
+    },
+    {
+      "code": 6012,
+      "name": "MarketAlreadyResolved",
+      "msg": "Market is already resolved"
+    },
+    {
+      "code": 6013,
+      "name": "InvalidOutcomeTokenAccount",
+      "msg": "The supplied token account does not match the selected outcome mint"
+    },
+    {
+      "code": 6014,
+      "name": "InvalidOracleAuthority",
+      "msg": "Only the configured oracle authority may resolve this market"
+    },
+    {
+      "code": 6015,
+      "name": "InvalidWinningMint",
+      "msg": "The provided winning mint does not match the market resolution"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidVault",
+      "msg": "The vault does not match the market vault"
+    },
+    {
+      "code": 6017,
+      "name": "MathOverflow",
+      "msg": "Math overflow while processing market balances"
+    },
+    {
+      "code": 6018,
+      "name": "MarketMustBeResolvedToDispute",
+      "msg": "Only resolved markets can be disputed"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidDisputeBond",
+      "msg": "Incorrect dispute bond supplied"
+    },
+    {
+      "code": 6020,
+      "name": "MarketAlreadyDisputed",
+      "msg": "This market has already been disputed"
+    }
+  ],
+  "types": [
+    {
+      "name": "HumanAttestation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "provider_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "reclaim_proof_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "stable_id_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "verified_at",
+            "type": "i64"
+          },
+          {
+            "name": "expires_at",
+            "type": "i64"
+          },
+          {
+            "name": "revoked",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Market",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "oracle_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "yes_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "no_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "question_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "question",
+            "type": "string"
+          },
+          {
+            "name": "outcomes",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "deadline_ts",
+            "type": "i64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "yes_pool",
+            "type": "u64"
+          },
+          {
+            "name": "no_pool",
+            "type": "u64"
+          },
+          {
+            "name": "bond_amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "MarketStatus"
+              }
+            }
+          },
+          {
+            "name": "resolved_outcome",
+            "type": "u8"
+          },
+          {
+            "name": "is_disputed",
+            "type": "bool"
+          },
+          {
+            "name": "resolve_nonce",
+            "type": "u64"
+          },
+          {
+            "name": "market_bump",
+            "type": "u8"
+          },
+          {
+            "name": "vault_bump",
+            "type": "u8"
+          },
+          {
+            "name": "yes_mint_bump",
+            "type": "u8"
+          },
+          {
+            "name": "no_mint_bump",
+            "type": "u8"
+          },
+          {
+            "name": "delegation_active",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Resolved"
+          },
+          {
+            "name": "Disputed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "OutcomeSide",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vault",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

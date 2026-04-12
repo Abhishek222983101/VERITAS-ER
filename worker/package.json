@@ -1,0 +1,23 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@solana/web3.js": "^1.98.4",
+    "@tavily/core": "^0.7.2",
+    "@types/node": "^25.6.0",
+    "dotenv": "^17.4.1",
+    "groq-sdk": "^1.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.2"
+  }
+}

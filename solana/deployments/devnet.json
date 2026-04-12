@@ -1,0 +1,20 @@
+{
+  "dive_market": {
+    "programId": "GdsJcVVwzv8sMwyYuKXgKiYouPUEBPHQS54xD4Rd1kDh",
+    "idlAccount": "7bPGiUBABAQNNJnGMexasR8fFc5eV8q8P3x2zVcDmkmE",
+    "deployerWallet": "HuHZuySqKNeHcBCUajcgBvdYdjWjtubJFA3iJr1j1c3P",
+    "solscan": "https://solscan.io/account/GdsJcVVwzv8sMwyYuKXgKiYouPUEBPHQS54xD4Rd1kDh?cluster=devnet"
+  },
+  "dive_oracle": {
+    "programId": "47aEwUawQtJL8rb4mjZ4XkQNF8gH7q3yAw1JqGLuFJSJ"
+  },
+  "dive_identity": {
+    "programId": "7NqTfy2DAoy9XaHqYStigVNmSgJ2Mh9HS2Rcrve5WFYj"
+  },
+  "magicblock": {
+    "routerUrl": "https://devnet-router.magicblock.app/",
+    "teeUrl": "https://devnet-tee.magicblock.app",
+    "erValidator": "MAS1Dt9qreoRM4YQuhg8UTZMMzDdKhmkZMECCzk57",
+    "teeValidator": "FnE6VJT5QNZdedZPnCoLsARgBwoE6DeJNjBs2H1gySXA"
+  }
+}

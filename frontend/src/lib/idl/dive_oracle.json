@@ -1,0 +1,1683 @@
+{
+  "address": "47aEwUawQtJL8rb4mjZ4XkQNF8gH7q3yAw1JqGLuFJSJ",
+  "metadata": {
+    "name": "dive_oracle",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "DIVE-Solana oracle core"
+  },
+  "instructions": [
+    {
+      "name": "adjust_reputation",
+      "discriminator": [
+        199,
+        193,
+        253,
+        43,
+        217,
+        116,
+        19,
+        44
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.market",
+                "account": "ResolutionSession"
+              }
+            ]
+          }
+        },
+        {
+          "name": "agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "agent.authority",
+                "account": "Agent"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "delta",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "commit_vote",
+      "discriminator": [
+        134,
+        97,
+        90,
+        126,
+        91,
+        66,
+        16,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.market",
+                "account": "ResolutionSession"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vote_commit",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "round",
+          "type": "u8"
+        },
+        {
+          "name": "commit_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "initialize_resolution_session",
+      "discriminator": [
+        58,
+        72,
+        197,
+        187,
+        155,
+        10,
+        36,
+        72
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "market"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "market",
+          "type": "pubkey"
+        },
+        {
+          "name": "committee_size",
+          "type": "u8"
+        },
+        {
+          "name": "commit_deadline",
+          "type": "i64"
+        },
+        {
+          "name": "reveal_deadline",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "register_agent",
+      "discriminator": [
+        135,
+        157,
+        66,
+        195,
+        2,
+        113,
+        175,
+        30
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "human_attestation",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  104,
+                  117,
+                  109,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                94,
+                190,
+                28,
+                190,
+                198,
+                182,
+                231,
+                179,
+                29,
+                219,
+                148,
+                149,
+                28,
+                96,
+                155,
+                9,
+                57,
+                2,
+                93,
+                236,
+                15,
+                44,
+                136,
+                17,
+                248,
+                153,
+                230,
+                16,
+                141,
+                90,
+                22,
+                208
+              ]
+            }
+          }
+        },
+        {
+          "name": "agent",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "personality_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "resolve_insight",
+      "discriminator": [
+        66,
+        164,
+        98,
+        156,
+        230,
+        183,
+        112,
+        247
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agent",
+          "writable": true
+        },
+        {
+          "name": "insight",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  105,
+                  110,
+                  115,
+                  105,
+                  103,
+                  104,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "agent"
+              },
+              {
+                "kind": "account",
+                "path": "insight.market",
+                "account": "AgentInsight"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "actual_outcome",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "reveal_vote",
+      "discriminator": [
+        100,
+        157,
+        139,
+        17,
+        186,
+        75,
+        185,
+        149
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.market",
+                "account": "ResolutionSession"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vote_commit",
+          "writable": true
+        },
+        {
+          "name": "vote_reveal",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "round",
+          "type": "u8"
+        },
+        {
+          "name": "vote",
+          "type": {
+            "defined": {
+              "name": "VoteChoice"
+            }
+          }
+        },
+        {
+          "name": "salt",
+          "type": {
+            "array": [
+              "u8",
+              16
+            ]
+          }
+        },
+        {
+          "name": "confidence",
+          "type": "u8"
+        },
+        {
+          "name": "evidence_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "select_committee",
+      "discriminator": [
+        215,
+        88,
+        75,
+        15,
+        207,
+        3,
+        104,
+        69
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.market",
+                "account": "ResolutionSession"
+              }
+            ]
+          }
+        },
+        {
+          "name": "oracle_queue",
+          "writable": true,
+          "address": "Cuj97ggrhhidhbu39TijNVqE74xvKJ69gDervRUXAxGh"
+        },
+        {
+          "name": "program_identity",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  105,
+                  100,
+                  101,
+                  110,
+                  116,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "vrf_program",
+          "address": "Vrf1RNUjXmQGjmQrQLvJHs9SNkvDJEsRVFPkfSQUwGz"
+        },
+        {
+          "name": "slot_hashes",
+          "address": "SysvarS1otHashes111111111111111111111111111"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "caller_seed",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "submit_insight",
+      "discriminator": [
+        212,
+        109,
+        237,
+        201,
+        233,
+        179,
+        146,
+        14
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "agent",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  97,
+                  103,
+                  101,
+                  110,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        },
+        {
+          "name": "insight",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  105,
+                  110,
+                  115,
+                  105,
+                  103,
+                  104,
+                  116
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "agent"
+              },
+              {
+                "kind": "arg",
+                "path": "market"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "market",
+          "type": "pubkey"
+        },
+        {
+          "name": "predicted_outcome",
+          "type": {
+            "defined": {
+              "name": "PredictionOutcome"
+            }
+          }
+        },
+        {
+          "name": "confidence",
+          "type": "u8"
+        },
+        {
+          "name": "reasoning",
+          "type": "string"
+        },
+        {
+          "name": "model_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "tally_votes",
+      "discriminator": [
+        144,
+        82,
+        0,
+        72,
+        160,
+        132,
+        35,
+        121
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.market",
+                "account": "ResolutionSession"
+              }
+            ]
+          }
+        },
+        {
+          "name": "market",
+          "writable": true
+        },
+        {
+          "name": "oracle_auth",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  111,
+                  114,
+                  97,
+                  99,
+                  108,
+                  101,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "dive_market_program",
+          "address": "8EYYww8fBe2bXZaVsyce6XMjt3bt8R2ih2JyEa4A1V3v"
+        }
+      ],
+      "args": [
+        {
+          "name": "round",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "vrf_callback",
+      "discriminator": [
+        248,
+        224,
+        55,
+        227,
+        56,
+        10,
+        108,
+        36
+      ],
+      "accounts": [
+        {
+          "name": "vrf_program_identity",
+          "signer": true,
+          "address": "9irBy75QS2BN81FUgXuHcjqceJJRuc9oDkAe8TKVvvAw"
+        },
+        {
+          "name": "session",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  115,
+                  101,
+                  115,
+                  115,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "session.market",
+                "account": "ResolutionSession"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "randomness",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Agent",
+      "discriminator": [
+        47,
+        166,
+        112,
+        147,
+        155,
+        197,
+        86,
+        7
+      ]
+    },
+    {
+      "name": "AgentInsight",
+      "discriminator": [
+        87,
+        14,
+        158,
+        123,
+        97,
+        126,
+        144,
+        95
+      ]
+    },
+    {
+      "name": "HumanAttestation",
+      "discriminator": [
+        211,
+        171,
+        68,
+        164,
+        35,
+        78,
+        18,
+        177
+      ]
+    },
+    {
+      "name": "Market",
+      "discriminator": [
+        219,
+        190,
+        213,
+        55,
+        0,
+        227,
+        198,
+        154
+      ]
+    },
+    {
+      "name": "ResolutionSession",
+      "discriminator": [
+        36,
+        102,
+        232,
+        227,
+        255,
+        122,
+        57,
+        235
+      ]
+    },
+    {
+      "name": "VoteCommit",
+      "discriminator": [
+        125,
+        216,
+        109,
+        1,
+        40,
+        87,
+        250,
+        47
+      ]
+    },
+    {
+      "name": "VoteReveal",
+      "discriminator": [
+        98,
+        48,
+        252,
+        227,
+        123,
+        6,
+        232,
+        84
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidAgentName",
+      "msg": "Agent name is invalid"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidDeadlines",
+      "msg": "Session deadlines are invalid"
+    },
+    {
+      "code": 6002,
+      "name": "InvalidSessionStatus",
+      "msg": "Session is not ready for committee selection"
+    },
+    {
+      "code": 6003,
+      "name": "MissingCandidateAgents",
+      "msg": "No candidate agents were supplied for committee selection"
+    },
+    {
+      "code": 6004,
+      "name": "AgentNotInCommittee",
+      "msg": "The supplied agent is not in the active committee"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidRound",
+      "msg": "Round does not match the current session round"
+    },
+    {
+      "code": 6006,
+      "name": "AttestationExpired",
+      "msg": "Attestation expired"
+    },
+    {
+      "code": 6007,
+      "name": "AttestationRevoked",
+      "msg": "Attestation revoked"
+    },
+    {
+      "code": 6008,
+      "name": "InvalidMarket",
+      "msg": "Invalid market"
+    },
+    {
+      "code": 6009,
+      "name": "InvalidReveal",
+      "msg": "Commit hash does not match the reveal payload"
+    },
+    {
+      "code": 6010,
+      "name": "CommitPhaseClosed",
+      "msg": "Commit phase is not active"
+    },
+    {
+      "code": 6011,
+      "name": "RevealPhaseClosed",
+      "msg": "Reveal phase is not active"
+    },
+    {
+      "code": 6012,
+      "name": "InvalidConfidence",
+      "msg": "Confidence must be between 0 and 100"
+    },
+    {
+      "code": 6013,
+      "name": "MissingRevealAccounts",
+      "msg": "No vote reveals were supplied for tallying"
+    },
+    {
+      "code": 6014,
+      "name": "InvalidSessionAuthority",
+      "msg": "Only the session authority may adjust agent reputation"
+    },
+    {
+      "code": 6015,
+      "name": "MathOverflow",
+      "msg": "Math overflow while tallying votes"
+    },
+    {
+      "code": 6016,
+      "name": "InvalidInsightConfidence",
+      "msg": "Confidence must be between 0 and 100 for insights"
+    },
+    {
+      "code": 6017,
+      "name": "InsightReasoningTooLong",
+      "msg": "Insight reasoning is too long"
+    },
+    {
+      "code": 6018,
+      "name": "InvalidAgentAuthority",
+      "msg": "Only the agent authority can submit insights"
+    },
+    {
+      "code": 6019,
+      "name": "AgentNotActive",
+      "msg": "Agent is not active and cannot submit insights"
+    },
+    {
+      "code": 6020,
+      "name": "InsightAlreadyResolved",
+      "msg": "This insight has already been resolved"
+    },
+    {
+      "code": 6021,
+      "name": "InsightOutcomeUnresolved",
+      "msg": "The actual outcome is not resolved yet"
+    }
+  ],
+  "types": [
+    {
+      "name": "Agent",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "sas_attestation",
+            "type": "pubkey"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "personality_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "reputation",
+            "type": "u64"
+          },
+          {
+            "name": "total_votes",
+            "type": "u64"
+          },
+          {
+            "name": "correct_votes",
+            "type": "u64"
+          },
+          {
+            "name": "is_active",
+            "type": "bool"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AgentInsight",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "predicted_outcome",
+            "type": "u8"
+          },
+          {
+            "name": "confidence",
+            "type": "u8"
+          },
+          {
+            "name": "reasoning",
+            "type": "string"
+          },
+          {
+            "name": "model_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "submitted_at",
+            "type": "i64"
+          },
+          {
+            "name": "resolved",
+            "type": "bool"
+          },
+          {
+            "name": "correct",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "HumanAttestation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "provider_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "reclaim_proof_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "stable_id_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "verified_at",
+            "type": "i64"
+          },
+          {
+            "name": "expires_at",
+            "type": "i64"
+          },
+          {
+            "name": "revoked",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Market",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "oracle_authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "vault",
+            "type": "pubkey"
+          },
+          {
+            "name": "yes_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "no_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "question_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "question",
+            "type": "string"
+          },
+          {
+            "name": "outcomes",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "deadline_ts",
+            "type": "i64"
+          },
+          {
+            "name": "created_at",
+            "type": "i64"
+          },
+          {
+            "name": "updated_at",
+            "type": "i64"
+          },
+          {
+            "name": "yes_pool",
+            "type": "u64"
+          },
+          {
+            "name": "no_pool",
+            "type": "u64"
+          },
+          {
+            "name": "bond_amount",
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "MarketStatus"
+              }
+            }
+          },
+          {
+            "name": "resolved_outcome",
+            "type": "u8"
+          },
+          {
+            "name": "is_disputed",
+            "type": "bool"
+          },
+          {
+            "name": "resolve_nonce",
+            "type": "u64"
+          },
+          {
+            "name": "market_bump",
+            "type": "u8"
+          },
+          {
+            "name": "vault_bump",
+            "type": "u8"
+          },
+          {
+            "name": "yes_mint_bump",
+            "type": "u8"
+          },
+          {
+            "name": "no_mint_bump",
+            "type": "u8"
+          },
+          {
+            "name": "delegation_active",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "MarketStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Active"
+          },
+          {
+            "name": "Resolved"
+          },
+          {
+            "name": "Disputed"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PredictionOutcome",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ResolutionSession",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "committee",
+            "type": {
+              "vec": "pubkey"
+            }
+          },
+          {
+            "name": "committee_size",
+            "type": "u8"
+          },
+          {
+            "name": "current_round",
+            "type": "u8"
+          },
+          {
+            "name": "commit_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "reveal_deadline",
+            "type": "i64"
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "SessionStatus"
+              }
+            }
+          },
+          {
+            "name": "final_outcome",
+            "type": "u8"
+          },
+          {
+            "name": "yes_votes",
+            "type": "u64"
+          },
+          {
+            "name": "no_votes",
+            "type": "u64"
+          },
+          {
+            "name": "unsure_votes",
+            "type": "u64"
+          },
+          {
+            "name": "last_randomness",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "SessionStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "PendingSelection"
+          },
+          {
+            "name": "CommitteeSelected"
+          },
+          {
+            "name": "CommitPhase"
+          },
+          {
+            "name": "RevealPhase"
+          },
+          {
+            "name": "Discussion"
+          },
+          {
+            "name": "Finalized"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteChoice",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "Yes"
+          },
+          {
+            "name": "No"
+          },
+          {
+            "name": "Unsure"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteCommit",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "session",
+            "type": "pubkey"
+          },
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "round",
+            "type": "u8"
+          },
+          {
+            "name": "commit_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "committed_at",
+            "type": "i64"
+          },
+          {
+            "name": "revealed",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteReveal",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "session",
+            "type": "pubkey"
+          },
+          {
+            "name": "market",
+            "type": "pubkey"
+          },
+          {
+            "name": "agent",
+            "type": "pubkey"
+          },
+          {
+            "name": "round",
+            "type": "u8"
+          },
+          {
+            "name": "vote",
+            "type": "u8"
+          },
+          {
+            "name": "salt",
+            "type": {
+              "array": [
+                "u8",
+                16
+              ]
+            }
+          },
+          {
+            "name": "confidence",
+            "type": "u8"
+          },
+          {
+            "name": "evidence_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "revealed_at",
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

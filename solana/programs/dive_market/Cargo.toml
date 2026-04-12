@@ -1,0 +1,31 @@
+[package]
+name = "dive_market"
+version = "0.1.0"
+description = "DIVE-Solana market core"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "dive_market"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build", "dive_identity/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+
+[dependencies]
+anchor-lang = { version = "0.32.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.32.1", features = ["associated_token", "token_2022", "idl-build"] }
+ephemeral-rollups-sdk = { version = "0.10.5", features = ["anchor", "disable-realloc"] }
+dive_identity = { path = "../dive_identity", features = ["cpi"] }
+
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

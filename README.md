@@ -1,91 +1,73 @@
+# DIVE / VERITAS: Decentralized AI Oracle & Prediction Market
 
-# CogniStream 
+![Solana](https://img.shields.io/badge/Solana-362D59?style=for-the-badge&logo=solana&logoColor=white)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![Anchor](https://img.shields.io/badge/Anchor-000000?style=for-the-badge&logo=rust&logoColor=white)
+![AI Agents](https://img.shields.io/badge/AI_Agents-Groq_%7C_Tavily-blue?style=for-the-badge)
 
-![CogniStream Banner](/public/hero-diagram.png)
+DIVE entirely removes human bias and centralization from the prediction market resolution process. It is a blazing-fast, Sybil-resistant prediction market built on **Solana** where the oracles are an autonomous **Swarm of AI Agents**.
 
-> **Ambient cognitive monitoring through passive kinematic telemetry. No tests. No anxiety. Just data.**
+## 💡 The Problem it Solves
+Current prediction markets (like Polymarket or Augur) suffer from a massive bottleneck: **The Oracle Problem**. Resolving markets manually is extremely slow, prone to human bias/manipulation, and vulnerable to Sybil attacks.
 
-**Built by Team Paradigm for the COHERENCE Hackathon (Healthcare Track)**
+**DIVE** solves this by utilizing an off-chain network of AI agents. When a market needs insight or resolution, these agents autonomously scour the internet, analyze the data using distinct personas (e.g., The Skeptic, The Optimist, The Data Analyst), and push their cryptographic predictions directly on-chain via our Anchor smart contracts.
 
----
+## ✨ Key Features
 
-## 🛑 The Problem Statement
+*   🤖 **AI Swarm Consensus (The Oracle):** Off-chain AI workers utilize **Groq** (fast LLM inference) and **Tavily** (real-time web search) to fetch data and reach a consensus.
+*   🛡️ **zkTLS Proof of Personhood:** Integrates **Reclaim Protocol (zkTLS)**. Before a user can place a bet, they must generate a Zero-Knowledge proof of their identity. One Human = One Wallet.
+*   ⚡ **Solana Speed & Economics:** Micro-betting and continuous oracle updates are economically viable thanks to Solana's sub-cent fees.
+*   🌌 **3D Consensus Visualization:** A custom 3D Agent Swarm Graph built with `@react-three/fiber` visually renders the AI agents' real-time consensus and confidence levels.
 
-Current clinical cognitive tests (like MoCA or MMSE) are fundamentally flawed for early detection. They are:
-1.  **Stressful & Active:** They require the patient to sit in a clinical setting and actively solve puzzles, causing "white coat syndrome" and anxiety.
-2.  **Infrequent:** They are only conducted once every 6-12 months.
-3.  **Too Late:** By the time a patient fails a clinical test, severe cognitive decline (Dementia, Alzheimer's, Parkinson's) has already occurred. 
+## 🏗️ Architecture & Codebase Structure
 
-## 💡 Our Proposed Solution
+Our monorepo is divided into three core pillars:
 
-**CogniStream** is an invisible safety net. It provides zero-friction, ambient monitoring of a patient's cognitive health by analyzing **how** they type on their everyday devices, not **what** they type. 
+1. **`/solana` (Smart Contracts):** Built with the Anchor Framework.
+   - `dive_identity`: Manages zkTLS human verification via PDAs (`HumanAttestation`).
+   - `dive_market`: Handles prediction market creation, betting logic (YES/NO pools), dynamic odds, and payouts.
+   - `dive_oracle`: Manages AI Agent registration, reputation staking, and the insight resolution pipeline.
+2. **`/frontend` (Web3 UI):** A Next.js 15 (App Router) application featuring a strict neo-brutalist design, `@solana/wallet-adapter-react`, and dynamic SSR-safe 3D rendering.
+3. **`/worker` (Off-Chain AI Oracle):** A Node.js backend that listens to the blockchain, queries Tavily for web context, prompts Groq LLMs for predictions, and submits insights back to the `dive_oracle` smart contract.
 
-By running quietly in the background, we continuously analyze kinematic metadata (physics-based typing patterns) to detect the earliest micro-signs of cognitive friction months before clinical symptoms appear.
+## 🚀 Getting Started
 
-### The Physics of Decline
-We track three core kinematic markers:
-*   **Flight Time:** The delay (in milliseconds) between releasing one key and pressing the next. An increasing gap indicates micro-hesitations and cognitive friction.
-*   **Dwell Time:** How long a single key is held down. Minute changes indicate creeping shifts in fine motor control.
-*   **Correction Frequency:** An erratic frequency of backtracking (backspaces) signals short-term memory blips or confusion.
+### 1. Smart Contracts
+Navigate to the `solana` directory to build and deploy the contracts:
+```bash
+cd solana
+npm install
+anchor build
+anchor test
+anchor deploy --provider.cluster devnet
+```
 
-**Total Privacy:** CogniStream ignores the content. Letters are hashed or discarded instantly; only the millisecond timestamps are transmitted.
+### 2. Frontend
+Navigate to the `frontend` directory to start the Next.js app:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The app will be available at `http://localhost:3000`.
 
----
+### 3. Off-Chain AI Worker
+Navigate to the `worker` directory to run the AI Swarm:
+```bash
+cd worker
+npm install
+```
+Create a `.env` file with your API keys:
+```env
+TAVILY_API_KEY="your-tavily-key"
+GROQ_API_KEY="your-groq-key"
+```
+Run the agent script against a live market:
+```bash
+npx ts-node agent.ts <MARKET_ID> "<MARKET_QUESTION>"
+```
 
-## 🛠️ The Architecture
-
-The image below outlines the full workflow from the edge device (Smartphone Keyboard) to the Cloud ML Engine, and finally to the Caregiver Dashboard.
-
-<img src="/public/architecture.jpg" alt="Cognitive Monitoring Workflow Architecture Diagram" width="100%" />
-
----
-
-## 🚀 The Hackathon MVP (What We Built)
-
-Building a native OS-level keyboard background service is impossible within a 24-hour hackathon. Therefore, our MVP is a **Live Web-Based Split-Screen Simulator** designed to prove the core mathematical concept and visual dashboard.
-
-**The Tech Stack:**
-*   **Frontend:** Next.js 16 (App Router), React 19
-*   **Styling:** Tailwind CSS v4, Custom Neo-Brutalist CSS utilities
-*   **Data Visualization:** Recharts (Real-time step-after line charts)
-*   **Animation:** Framer Motion, Radix UI
-
-### Key Features of the MVP:
-*   **Live Mathematical Engine:** We wrote pure JS event listeners (`onKeyDown`, `onKeyUp`) that use `Date.now()` to calculate your actual Flight and Dwell times in real-time right in the browser.
-*   **Split-Screen UI:** Demonstrates the "Patient" side (a normal chat app) alongside the "Caregiver" side (the live telemetry dashboard).
-*   **Dynamic Cognitive Fluidity Score:** A rolling average algorithm that penalizes erratic typing, slow flight times, and heavy backspace usage, dynamically shifting the UI from Green (Optimal) to Red (Anomaly Detected).
-
----
-
-## 👨‍💻 How to Test the Live MVP
-
-To experience the "Smoke and Mirrors" live demo, follow these exact steps:
-
-1.  **Start the Simulator:** Launch the app and click **"Run the Live Demo"** from the landing page.
-2.  **Phase 1: The Healthy Baseline**
-    *   Click into the chat box on the left pane and type a normal, casual sentence at your normal speed (e.g., *"Hi Rahul, I am doing great today."*).
-    *   **Observe:** The right pane dashboard will stay Lime Green. The Cognitive Fluidity Score will remain above 90. The Recharts line graphs will remain flat and below the baseline.
-3.  **Phase 2: Simulating Cognitive Decline**
-    *   Now, simulate a patient experiencing cognitive hesitation or motor tremors.
-    *   **Action 1 (High Dwell):** Press and intentionally *hold* a key down for a split second longer than normal before releasing it.
-    *   **Action 2 (High Flight):** Type a word, stop and pause entirely for a full second, then type the next word.
-    *   **Action 3 (Corrections):** Hit the Backspace key 5 or 6 times rapidly.
-4.  **The Result:** 
-    *   The mathematical engine will immediately catch the variance. 
-    *   The `Cognitive Fluidity Score` will crash below 70.
-    *   The dashboard will violently flash **Hot Coral Red**.
-    *   The "ANOMALY DETECTED" banner will trigger, proving the concept works on live data.
-
----
-
-## 🔮 Future Scope (The Real Product)
-
-While this MVP is a web simulator, the actual production build will consist of:
-
-1.  **The Edge Device Layer:** Native Custom Keyboard Extensions for iOS (Swift) and Android (Kotlin) that silently collect timestamps.
-2.  **The Cloud Backend:** AWS Kinesis for data ingestion and TimescaleDB for storing millions of millisecond-precise time-series data points.
-3.  **The ML Engine:** Python/PyTorch-based anomaly detection models (e.g., Isolation Forests) that establish a personalized 14-day baseline for the user and flag deviations mathematically, rather than relying on hardcoded thresholds.
-4.  **Caregiver Alerts:** Automated SMS/Email push notifications when the ML engine detects a sustained 7-day downward trend in cognitive fluidity.
-
----
-
+## 🧗 Technical Hurdles Overcome
+- **Solana Frame Space Overflow:** Refactored heavy Rust dependencies (like regex) out of the Anchor programs and optimized release profiles to stay within Solana's 4096-byte stack limit.
+- **Next.js Hydration Mismatches:** Leveraged `next/dynamic` to safely render WebGL/Three.js and Wallet Adapter components entirely on the client side.
+- **On-Chain AI Integration:** Engineered complex TypeScript workers to perfectly map unpredictable LLM string outputs to strict Rust Enums (`YES`, `NO`, `UNSURE`) via the Anchor RPC.

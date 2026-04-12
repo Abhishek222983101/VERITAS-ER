@@ -1,0 +1,32 @@
+[package]
+name = "dive_oracle"
+version = "0.1.0"
+description = "DIVE-Solana oracle core"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "dive_oracle"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+
+[dependencies]
+solana-program = "=2.3.0"
+anchor-lang = { version = "0.32.1", features = ["init-if-needed"] }
+ephemeral-vrf-sdk = { version = "0.2.3", features = ["anchor"] }
+dive_market = { path = "../dive_market", features = ["cpi"] }
+dive_identity = { path = "../dive_identity", features = ["cpi"] }
+
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }

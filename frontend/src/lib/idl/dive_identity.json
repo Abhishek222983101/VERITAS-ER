@@ -1,0 +1,402 @@
+{
+  "address": "7NqTfy2DAoy9XaHqYStigVNmSgJ2Mh9HS2Rcrve5WFYj",
+  "metadata": {
+    "name": "dive_identity",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "DIVE-Solana identity registry"
+  },
+  "instructions": [
+    {
+      "name": "check_human",
+      "discriminator": [
+        239,
+        118,
+        83,
+        133,
+        40,
+        160,
+        176,
+        173
+      ],
+      "accounts": [
+        {
+          "name": "wallet"
+        },
+        {
+          "name": "human_attestation",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  104,
+                  117,
+                  109,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wallet"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "authorized_issuer",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "revoke_attestation",
+      "discriminator": [
+        12,
+        156,
+        103,
+        161,
+        194,
+        246,
+        211,
+        179
+      ],
+      "accounts": [
+        {
+          "name": "issuer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "wallet"
+        },
+        {
+          "name": "human_attestation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  104,
+                  117,
+                  109,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wallet"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "verify_human",
+      "discriminator": [
+        253,
+        169,
+        52,
+        210,
+        3,
+        111,
+        154,
+        219
+      ],
+      "accounts": [
+        {
+          "name": "issuer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "wallet"
+        },
+        {
+          "name": "human_attestation",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  118,
+                  101,
+                  95,
+                  104,
+                  117,
+                  109,
+                  97,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "provider_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "reclaim_proof_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "stable_id_hash",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "expires_at",
+          "type": "i64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "GlobalConfig",
+      "discriminator": [
+        149,
+        8,
+        156,
+        202,
+        160,
+        252,
+        176,
+        217
+      ]
+    },
+    {
+      "name": "HumanAttestation",
+      "discriminator": [
+        211,
+        171,
+        68,
+        164,
+        35,
+        78,
+        18,
+        177
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidExpiration",
+      "msg": "Expiration timestamp must be in the future"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidIssuer",
+      "msg": "Only the attestation issuer may revoke or update this attestation"
+    },
+    {
+      "code": 6002,
+      "name": "AttestationRevoked",
+      "msg": "Attestation is revoked"
+    },
+    {
+      "code": 6003,
+      "name": "AttestationExpired",
+      "msg": "Attestation has expired"
+    }
+  ],
+  "types": [
+    {
+      "name": "GlobalConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "authorized_issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "HumanAttestation",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "type": "pubkey"
+          },
+          {
+            "name": "issuer",
+            "type": "pubkey"
+          },
+          {
+            "name": "provider_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "reclaim_proof_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "stable_id_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "verified_at",
+            "type": "i64"
+          },
+          {
+            "name": "expires_at",
+            "type": "i64"
+          },
+          {
+            "name": "revoked",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ]
+}

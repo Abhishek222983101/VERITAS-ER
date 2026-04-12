@@ -1,0 +1,36 @@
+[toolchain]
+package_manager = "pnpm"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+dive_identity = "7NqTfy2DAoy9XaHqYStigVNmSgJ2Mh9HS2Rcrve5WFYj"
+dive_oracle = "47aEwUawQtJL8rb4mjZ4XkQNF8gH7q3yAw1JqGLuFJSJ"
+dive_market = "8EYYww8fBe2bXZaVsyce6XMjt3bt8R2ih2JyEa4A1V3v"
+
+[programs.devnet]
+dive_identity = "7NqTfy2DAoy9XaHqYStigVNmSgJ2Mh9HS2Rcrve5WFYj"
+dive_oracle = "47aEwUawQtJL8rb4mjZ4XkQNF8gH7q3yAw1JqGLuFJSJ"
+dive_market = "8EYYww8fBe2bXZaVsyce6XMjt3bt8R2ih2JyEa4A1V3v"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "pnpm mocha -t 1000000 tests/"
+
+[test]
+startup_wait = 10000
+
+[test.validator]
+url = "https://api.devnet.solana.com"
+bind_address = "127.0.0.1"
+clone = [
+    { address = "MAS1Dt9qreoRMQ14YQuhg8UTZMMzDdKhmkZMECCzk57" }
+]
