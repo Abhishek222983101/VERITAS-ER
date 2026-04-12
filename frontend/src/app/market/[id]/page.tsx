@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -8,26 +8,14 @@ import {
   TrendingUp,
   Clock,
   Brain,
-  ShieldCheck,
-  Eye,
-  EyeOff,
-  MessageSquare,
   CheckCircle2,
-  AlertTriangle,
+  Loader2,
+  Zap,
 } from "lucide-react";
-import { MARKETS, AGENTS } from "@/lib/data";
+import { MARKETS } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { GradientHeading } from "@/components/ui/gradient-heading";
-
-const PHASE_STEPS = [
-  { key: "committee", label: "Committee Selected", icon: ShieldCheck },
-  { key: "research", label: "Research Phase", icon: Brain },
-  { key: "commit", label: "Commit (PER)", icon: EyeOff },
-  { key: "reveal", label: "Reveal (Base)", icon: Eye },
-  { key: "discussion", label: "Discussion", icon: MessageSquare },
-  { key: "final", label: "Final Vote", icon: CheckCircle2 },
-  { key: "complete", label: "Settled", icon: TrendingUp },
-];
+import DisputeTracker from "@/components/dispute-tracker";
 
 export default function MarketDetailPage() {
   const params = useParams();
@@ -36,6 +24,48 @@ export default function MarketDetailPage() {
 
   const [betAmount, setBetAmount] = useState("");
   const [betSide, setBetSide] = useState<"YES" | "NO">("YES");
+  const [activeDisputeId, setActiveDisputeId] = useState<string | null>(null);
+  const [isResolving, setIsResolving] = useState(false);
+
+  const checkExistingDispute = useCallback(async () => {
+    if (!id) return;
+    try {
+      const res = await fetch(`/api/dispute/${id}?byMarket=true&light=true`);
+      const data = await res.json();
+      if (data.dispute && ["researching", "voting", "discussion", "revoting", "mediating"].includes(data.dispute.status)) {
+        setActiveDisputeId(data.dispute.id);
+      }
+    } catch {}
+  }, [id]);
+
+  useEffect(() => {
+    checkExistingDispute();
+  }, [checkExistingDispute]);
+
+  const handleOpenDispute = async () => {
+    if (!market) return;
+    setIsResolving(true);
+    try {
+      const res = await fetch("/api/dispute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          market_id: market.id,
+          question: market.question,
+          resolution_criteria: `Resolve whether: ${market.question}`,
+          resolution_date: market.deadline,
+        }),
+      });
+      const data = await res.json();
+      if (data.dispute) {
+        setActiveDisputeId(data.dispute.id);
+      }
+    } catch (err) {
+      console.error("Dispute resolution failed:", err);
+    } finally {
+      setIsResolving(false);
+    }
+  };
 
   if (!market) {
     return (
@@ -59,29 +89,29 @@ export default function MarketDetailPage() {
         {/* Top Bar */}
         <div className="bg-black text-white py-3 border-brutal-b">
           <div className="mx-auto w-[95%] max-w-7xl flex items-center justify-between">
-          <Link href="/markets" className="flex items-center gap-3 hover:text-lime-green transition-colors">
-            <ArrowLeft className="w-5 h-5" strokeWidth={3} />
-            <span className="font-heading font-black uppercase tracking-tighter">Back</span>
-          </Link>
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-white/40">
-              {market.category}
-            </span>
-            <span className={`px-2 py-1 border-2 font-heading font-black text-[10px] uppercase ${
-              market.status === "active" ? "bg-lime-green text-black border-black" :
-              market.status === "resolved" ? "bg-cyber-yellow text-black border-black" :
-              market.status === "disputed" ? "bg-hot-coral text-black border-black" :
-              "bg-solana-purple text-white border-white/30"
-            }`}>
-              {market.status}
-            </span>
-           </div>
+            <Link href="/markets" className="flex items-center gap-3 hover:text-lime-green transition-colors">
+              <ArrowLeft className="w-5 h-5" strokeWidth={3} />
+              <span className="font-heading font-black uppercase tracking-tighter">Back</span>
+            </Link>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-white/40">
+                {market.category}
+              </span>
+              <span className={`px-2 py-1 border-2 font-heading font-black text-[10px] uppercase ${
+                market.status === "active" ? "bg-lime-green text-black border-black" :
+                market.status === "resolved" ? "bg-cyber-yellow text-black border-black" :
+                market.status === "disputed" ? "bg-hot-coral text-black border-black" :
+                "bg-solana-purple text-white border-white/30"
+              }`}>
+                {market.status}
+              </span>
+            </div>
           </div>
         </div>
 
         <div className="py-8">
           <div className="mx-auto w-[95%] max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column - Market Info + Trading */}
+            {/* Left Column */}
             <div className="lg:col-span-2 space-y-6">
               {/* Question */}
               <div className="bg-white border-brutal shadow-brutal p-6 md:p-8">
@@ -106,8 +136,6 @@ export default function MarketDetailPage() {
                   <h2 className="font-heading text-xl font-black uppercase tracking-tight border-brutal-b pb-3 mb-6">
                     Place Bet
                   </h2>
-
-                  {/* YES/NO Selector */}
                   <div className="grid grid-cols-2 gap-4 mb-6">
                     <button
                       onClick={() => setBetSide("YES")}
@@ -132,8 +160,6 @@ export default function MarketDetailPage() {
                       <p className="font-heading font-black text-3xl text-hot-coral tabular-nums">{noPercent}¢</p>
                     </button>
                   </div>
-
-                  {/* Amount Input */}
                   <div className="mb-4">
                     <label className="font-heading font-black uppercase text-sm tracking-wider mb-2 block">
                       Amount (SOL)
@@ -146,73 +172,9 @@ export default function MarketDetailPage() {
                       className="w-full h-14 px-4 border-4 border-black bg-cream font-mono text-lg font-bold focus:outline-none focus:bg-white transition-colors"
                     />
                   </div>
-
                   <Button variant={betSide === "YES" ? "default" : "destructive"} className="w-full h-14 text-xl">
                     Bet {betSide} {betAmount ? `${betAmount} SOL` : ""}
                   </Button>
-
-                  {market.resolution && (
-                    <div className="mt-4 p-4 border-4 border-cyber-yellow bg-cyber-yellow/10 flex items-center gap-3">
-                      <CheckCircle2 className="w-6 h-6 text-cyber-yellow" />
-                      <div>
-                        <p className="font-heading font-black uppercase text-sm">Resolved: {market.resolution}</p>
-                        <p className="font-mono text-xs text-black/50">Claim your payout below</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Resolution Timeline (for non-active markets) */}
-              {market.status !== "active" && (
-                <div className="bg-white border-brutal shadow-brutal p-6 md:p-8">
-                  <h2 className="font-heading text-xl font-black uppercase tracking-tight border-brutal-b pb-3 mb-6">
-                    Resolution Pipeline
-                  </h2>
-                  <div className="space-y-4">
-                    {PHASE_STEPS.map((step, i) => {
-                      const phaseOrder = ["committee", "research", "commit", "reveal", "discussion", "final", "complete"];
-                      const currentIdx = phaseOrder.indexOf(market.status);
-                      const stepIdx = phaseOrder.indexOf(step.key);
-                      const isComplete = stepIdx < currentIdx;
-                      const isCurrent = step.key === market.status;
-                      const Icon = step.icon;
-
-                      return (
-                        <div
-                          key={step.key}
-                          className={`flex items-center gap-4 p-3 border-2 ${
-                            isCurrent ? "border-solana-purple bg-solana-purple/10" :
-                            isComplete ? "border-lime-green bg-lime-green/10" :
-                            "border-black/10 bg-black/5"
-                          }`}
-                        >
-                          <div className={`w-10 h-10 flex items-center justify-center border-2 ${
-                            isCurrent ? "border-solana-purple bg-solana-purple text-white" :
-                            isComplete ? "border-lime-green bg-lime-green" :
-                            "border-black/20 bg-white"
-                          }`}>
-                            <Icon className="w-5 h-5" strokeWidth={3} />
-                          </div>
-                          <div className="flex-1">
-                            <p className={`font-heading font-black uppercase text-sm ${
-                              isCurrent ? "text-solana-purple" : isComplete ? "text-lime-green" : "text-black/30"
-                            }`}>
-                              Phase {i + 1}: {step.label}
-                            </p>
-                          </div>
-                          {isCurrent && (
-                            <span className="px-2 py-1 bg-solana-purple text-white font-mono text-[10px] font-bold uppercase animate-pulse">
-                              Live
-                            </span>
-                          )}
-                          {isComplete && (
-                            <CheckCircle2 className="w-5 h-5 text-lime-green" />
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
                 </div>
               )}
 
@@ -236,62 +198,64 @@ export default function MarketDetailPage() {
                   </div>
                 </div>
                 <div className="mt-4 h-6 border-2 border-black flex overflow-hidden">
-                  <div
-                    className="bg-lime-green transition-all duration-500"
-                    style={{ width: `${parseFloat(yesPercent)}%` }}
-                  />
-                  <div
-                    className="bg-hot-coral transition-all duration-500"
-                    style={{ width: `${parseFloat(noPercent)}%` }}
-                  />
+                  <div className="bg-lime-green transition-all duration-500" style={{ width: `${parseFloat(yesPercent)}%` }} />
+                  <div className="bg-hot-coral transition-all duration-500" style={{ width: `${parseFloat(noPercent)}%` }} />
                 </div>
               </div>
             </div>
 
-            {/* Right Column - Agent Insights */}
+            {/* Right Column - AI Predictions */}
             <div className="space-y-6">
-              {/* Agent Insights */}
+              {/* Live AI Predictions */}
               <div className="bg-white border-brutal shadow-brutal p-6">
                 <h2 className="font-heading text-xl font-black uppercase tracking-tight border-brutal-b pb-3 mb-4">
                   AI Predictions
                 </h2>
-                {market.agentInsights.length > 0 ? (
-                  <div className="space-y-3">
-                    {market.agentInsights.map((insight, i) => (
-                      <div
-                        key={i}
-                        className={`border-2 p-3 ${
-                          insight.prediction === "YES"
-                            ? "border-lime-green bg-lime-green/5"
-                            : "border-hot-coral bg-hot-coral/5"
-                        }`}
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-heading font-black uppercase text-sm">
-                            {insight.agentName}
-                          </span>
-                          <span
-                            className={`px-2 py-0.5 border font-heading font-black text-xs uppercase ${
-                              insight.prediction === "YES"
-                                ? "bg-lime-green text-black border-black"
-                                : "bg-hot-coral text-black border-black"
-                            }`}
-                          >
-                            {insight.prediction} {insight.confidence}%
-                          </span>
-                        </div>
-                        <p className="font-mono text-xs text-black/70 leading-relaxed">
-                          {insight.reasoning}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+
+                {activeDisputeId ? (
+                  <DisputeTracker disputeId={activeDisputeId} onDismiss={() => setActiveDisputeId(null)} />
                 ) : (
-                  <div className="text-center py-8">
+                  <div className="text-center py-6">
                     <Brain className="w-8 h-8 text-black/20 mx-auto mb-2" />
-                    <p className="font-mono text-xs font-bold uppercase text-black/30">
-                      No agent insights yet
+                    <p className="font-mono text-xs font-bold uppercase text-black/30 mb-4">
+                      No live predictions yet
                     </p>
+                    {market.agentInsights.length > 0 && (
+                      <div className="space-y-2 mb-4">
+                        {market.agentInsights.map((insight, i) => (
+                          <div key={i} className={`border-2 p-2 text-left ${
+                            insight.prediction === "YES" ? "border-lime-green bg-lime-green/5" : "border-hot-coral bg-hot-coral/5"
+                          }`}>
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="font-heading font-black uppercase text-[10px]">{insight.agentName}</span>
+                              <span className="font-mono text-[9px] font-bold uppercase text-black/40">
+                                {insight.prediction} {insight.confidence}%
+                              </span>
+                            </div>
+                            <p className="font-mono text-[9px] text-black/50 leading-relaxed">{insight.reasoning}</p>
+                          </div>
+                        ))}
+                        <p className="font-mono text-[8px] text-black/30 uppercase mt-2">Static predictions - click below for live</p>
+                      </div>
+                    )}
+                    <Button
+                      variant="solana"
+                      className="w-full"
+                      onClick={handleOpenDispute}
+                      disabled={isResolving}
+                    >
+                      {isResolving ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Starting...
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="w-4 h-4 mr-2" />
+                          Solve with AI Agents
+                        </>
+                      )}
+                    </Button>
                   </div>
                 )}
               </div>

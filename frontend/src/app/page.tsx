@@ -4,6 +4,7 @@ import HeroText from "@/components/ui/hero-shutter-text";
 import { MetricsScoreCards } from "@/components/ui/metrics-score-cards";
 import { GradientHeading } from "@/components/ui/gradient-heading";
 import { GridAnimation } from "@/components/ui/mouse-following-line";
+import { FloatingHeader } from "@/components/ui/floating-header";
 import { AGENTS, TECH_STACK } from "@/lib/data";
 
 export default function Home() {

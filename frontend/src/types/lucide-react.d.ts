@@ -33,6 +33,8 @@ declare module "lucide-react" {
   export const Vote: Icon;
   export const Wallet: Icon;
   export const Zap: Icon;
+  export const Loader2: Icon;
+  export const ArrowRight: Icon;
   export const X: Icon;
   export const AlertTriangle: Icon;
   export const DollarSign: Icon;
