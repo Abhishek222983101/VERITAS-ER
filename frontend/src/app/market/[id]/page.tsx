@@ -127,7 +127,15 @@ export default function MarketDetailPage() {
           systemProgram: SystemProgram.programId,
         } as any)
         .preInstructions(preInstructions)
-        .rpc();
+        .rpc({ skipPreflight: true });
+
+      const connection = provider.connection;
+      const latestBlockhash = await connection.getLatestBlockhash("confirmed");
+      await connection.confirmTransaction({
+        signature: tx,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      }, "confirmed");
 
       alert("Bet placed successfully! TX: " + tx);
       refresh();

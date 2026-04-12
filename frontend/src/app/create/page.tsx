@@ -10,7 +10,7 @@ import { useDivePrograms } from "@/lib/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BN } from "@coral-xyz/anchor";
 
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, SystemProgram } from "@solana/web3.js";
 
 const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
 
@@ -49,6 +49,23 @@ export default function CreateMarketPage() {
       
       const oracleAuthority = publicKey; // For demo, deployer acts as oracle auth
 
+      const [marketPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_market"), new Uint8Array(questionHash)],
+        diveMarket.programId
+      );
+      const [vaultPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_vault"), marketPda.toBuffer()],
+        diveMarket.programId
+      );
+      const [yesMintPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_yes_mint"), marketPda.toBuffer()],
+        diveMarket.programId
+      );
+      const [noMintPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_no_mint"), marketPda.toBuffer()],
+        diveMarket.programId
+      );
+
       const tx = await diveMarket.methods.initializeMarket(
         questionHash,
         question,
@@ -58,8 +75,21 @@ export default function CreateMarketPage() {
         oracleAuthority
       ).accounts({
         authority: publicKey,
+        market: marketPda,
+        vault: vaultPda,
+        yesMint: yesMintPda,
+        noMint: noMintPda,
         tokenProgram: TOKEN_2022_PROGRAM_ID,
-      }).rpc();
+        systemProgram: SystemProgram.programId,
+      } as any).rpc({ skipPreflight: true });
+
+      const connection = (diveMarket.provider as any).connection;
+      const latestBlockhash = await connection.getLatestBlockhash("confirmed");
+      await connection.confirmTransaction({
+        signature: tx,
+        blockhash: latestBlockhash.blockhash,
+        lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+      }, "confirmed");
 
       console.log("Market created with tx:", tx);
       setSubmitted(true);
