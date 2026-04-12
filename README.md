@@ -1,16 +1,16 @@
-# DIVE / VERITAS: Decentralized AI Oracle & Prediction Market
+# VERITAS: Decentralized AI Oracle & Prediction Market
 
 ![Solana](https://img.shields.io/badge/Solana-362D59?style=for-the-badge&logo=solana&logoColor=white)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![Anchor](https://img.shields.io/badge/Anchor-000000?style=for-the-badge&logo=rust&logoColor=white)
 ![AI Agents](https://img.shields.io/badge/AI_Agents-Groq_%7C_Tavily-blue?style=for-the-badge)
 
-DIVE entirely removes human bias and centralization from the prediction market resolution process. It is a blazing-fast, Sybil-resistant prediction market built on **Solana** where the oracles are an autonomous **Swarm of AI Agents**.
+VERITAS entirely removes human bias and centralization from the prediction market resolution process. It is a blazing-fast, Sybil-resistant prediction market built on **Solana** where the oracles are an autonomous **Swarm of AI Agents**.
 
 ## 💡 The Problem it Solves
 Current prediction markets (like Polymarket or Augur) suffer from a massive bottleneck: **The Oracle Problem**. Resolving markets manually is extremely slow, prone to human bias/manipulation, and vulnerable to Sybil attacks.
 
-**DIVE** solves this by utilizing an off-chain network of AI agents. When a market needs insight or resolution, these agents autonomously scour the internet, analyze the data using distinct personas (e.g., The Skeptic, The Optimist, The Data Analyst), and push their cryptographic predictions directly on-chain via our Anchor smart contracts.
+**VERITAS** solves this by utilizing an off-chain network of AI agents. When a market needs insight or resolution, these agents autonomously scour the internet, analyze the data using distinct personas (e.g., The Skeptic, The Optimist, The Data Analyst), and push their cryptographic predictions directly on-chain via our Anchor smart contracts.
 
 ## ✨ Key Features
 
@@ -24,11 +24,11 @@ Current prediction markets (like Polymarket or Augur) suffer from a massive bott
 Our monorepo is divided into three core pillars:
 
 1. **`/solana` (Smart Contracts):** Built with the Anchor Framework.
-   - `dive_identity`: Manages zkTLS human verification via PDAs (`HumanAttestation`).
-   - `dive_market`: Handles prediction market creation, betting logic (YES/NO pools), dynamic odds, and payouts.
-   - `dive_oracle`: Manages AI Agent registration, reputation staking, and the insight resolution pipeline.
+   - `VERITAS_identity`: Manages zkTLS human verification via PDAs (`HumanAttestation`).
+   - `VERITAS_market`: Handles prediction market creation, betting logic (YES/NO pools), dynamic odds, and payouts.
+   - `VERITAS_oracle`: Manages AI Agent registration, reputation staking, and the insight resolution pipeline.
 2. **`/frontend` (Web3 UI):** A Next.js 15 (App Router) application featuring a strict neo-brutalist design, `@solana/wallet-adapter-react`, and dynamic SSR-safe 3D rendering.
-3. **`/worker` (Off-Chain AI Oracle):** A Node.js backend that listens to the blockchain, queries Tavily for web context, prompts Groq LLMs for predictions, and submits insights back to the `dive_oracle` smart contract.
+3. **`/worker` (Off-Chain AI Oracle):** A Node.js backend that listens to the blockchain, queries Tavily for web context, prompts Groq LLMs for predictions, and submits insights back to the `VERITAS_oracle` smart contract.
 
 ## 🚀 Getting Started
 
