@@ -28,37 +28,23 @@ export default function VerifyPage() {
     setTimeout(async () => {
       setStep("attesting");
       try {
-        const [attestationPda] = PublicKey.findProgramAddressSync(
-          [Buffer.from("dive_human"), publicKey.toBuffer()],
-          diveIdentity.programId
-        );
-        const [protocolConfigPda] = PublicKey.findProgramAddressSync(
-          [Buffer.from("dive_config")],
-          diveIdentity.programId
-        );
+        const response = await fetch("/api/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ wallet: publicKey.toBase58() }),
+        });
 
-        // Dummy Reclaim proof for demo
-        const providerHash = Array.from({ length: 32 }, () => Math.floor(Math.random() * 256));
-        const reclaimProofHash = Array.from({ length: 32 }, () => Math.floor(Math.random() * 256));
-        const stableIdHash = Array.from({ length: 32 }, () => Math.floor(Math.random() * 256));
-        const expiresAt = new anchor.BN(Math.floor(Date.now() / 1000) + 365 * 24 * 60 * 60);
+        const data = await response.json();
 
-        const tx = await diveIdentity.methods
-          .verifyHuman(providerHash, reclaimProofHash, stableIdHash, expiresAt)
-          .accounts({
-            issuer: publicKey, // Mocking issuer as the current user for demo purposes
-            config: protocolConfigPda,
-            wallet: publicKey,
-            humanAttestation: attestationPda,
-            systemProgram: SystemProgram.programId,
-          } as any)
-          .rpc();
+        if (!response.ok) {
+          throw new Error(data.error || "Verification failed");
+        }
         
-        console.log("Registered human! TX:", tx);
+        console.log("Registered human! TX:", data.tx);
         setStep("complete");
-      } catch (e) {
+      } catch (e: any) {
         console.error("Verification failed:", e);
-        alert("Failed to register. See console for details.");
+        alert(`Failed to register: ${e.message}`);
         setStep("idle");
       }
     }, 4500);

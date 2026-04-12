@@ -10,6 +10,10 @@ import { useDivePrograms } from "@/lib/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { BN } from "@coral-xyz/anchor";
 
+import { PublicKey } from "@solana/web3.js";
+
+const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb");
+
 export default function CreateMarketPage() {
   const { diveMarket } = useDivePrograms();
   const { publicKey } = useWallet();
@@ -54,6 +58,7 @@ export default function CreateMarketPage() {
         oracleAuthority
       ).accounts({
         authority: publicKey,
+        tokenProgram: TOKEN_2022_PROGRAM_ID,
       }).rpc();
 
       console.log("Market created with tx:", tx);

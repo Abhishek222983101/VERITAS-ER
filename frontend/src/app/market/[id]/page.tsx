@@ -35,6 +35,8 @@ const PHASE_STEPS = [
   { key: "complete", label: "Settled", icon: TrendingUp },
 ];
 
+import { getAssociatedTokenAddressSync, createAssociatedTokenAccountInstruction, TOKEN_2022_PROGRAM_ID } from "@solana/spl-token";
+
 export default function MarketDetailPage() {
   const params = useParams();
   const id = params?.id as string;
@@ -69,25 +71,65 @@ export default function MarketDetailPage() {
 
     try {
       const marketPubkey = new PublicKey(id);
-      
-      const [betPda] = PublicKey.findProgramAddressSync(
-        [Buffer.from("bet"), marketPubkey.toBuffer(), publicKey.toBuffer()],
+
+      // We need the market account data to get questionHash, but actually, the seeds for vault/mints just use market.key()
+      // Wait, market uses questionHash, but we already have the market pubkey.
+      const [vaultPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_vault"), marketPubkey.toBuffer()],
+        diveMarket.programId
+      );
+      const [yesMintPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_yes_mint"), marketPubkey.toBuffer()],
+        diveMarket.programId
+      );
+      const [noMintPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("dive_no_mint"), marketPubkey.toBuffer()],
         diveMarket.programId
       );
 
+      const targetMint = betSide === "YES" ? yesMintPda : noMintPda;
+      
+      const userTokenAccount = getAssociatedTokenAddressSync(
+        targetMint,
+        publicKey,
+        true,
+        TOKEN_2022_PROGRAM_ID
+      );
+
+      // Check if ATA exists
+      const ataInfo = await provider.connection.getAccountInfo(userTokenAccount);
+      const preInstructions = [];
+      if (!ataInfo) {
+        preInstructions.push(
+          createAssociatedTokenAccountInstruction(
+            publicKey,
+            userTokenAccount,
+            publicKey,
+            targetMint,
+            TOKEN_2022_PROGRAM_ID
+          )
+        );
+      }
+      
       const amount = parseFloat(betAmount) * 1e9; // to lamports
 
-      await diveMarket.methods
+      const tx = await diveMarket.methods
         .placeBet(new (provider as any).wallet.publicKey.constructor.BN(amount), betSide === "YES" ? { yes: {} } : { no: {} })
         .accounts({
+          bettor: publicKey,
+          humanAttestation: attestationPda,
           market: marketPubkey,
-          bet: betPda,
-          user: publicKey,
+          vault: vaultPda,
+          yesMint: yesMintPda,
+          noMint: noMintPda,
+          userTokenAccount: userTokenAccount,
+          tokenProgram: TOKEN_2022_PROGRAM_ID,
           systemProgram: SystemProgram.programId,
         } as any)
+        .preInstructions(preInstructions)
         .rpc();
 
-      alert("Bet placed successfully!");
+      alert("Bet placed successfully! TX: " + tx);
       refresh();
     } catch (e) {
       console.error(e);
