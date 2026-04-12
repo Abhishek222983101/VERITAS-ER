@@ -31,7 +31,9 @@ export default function RootLayout({
       <body
         className={`${bricolage.variable} ${jetbrainsMono.variable} antialiased selection:bg-black selection:text-[#A7F3D0]`}
       >
-        <FloatingHeader />
+        <div className="relative z-50 pt-4">
+          <FloatingHeader />
+        </div>
         {children}
       </body>
     </html>

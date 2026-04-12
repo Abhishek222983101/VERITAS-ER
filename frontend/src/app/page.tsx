@@ -19,6 +19,10 @@ export default function Home() {
     <div className="min-h-screen bg-cream font-mono relative bg-noise overflow-x-hidden">
       <div className="fixed inset-0 bg-dot-pattern opacity-[0.06] pointer-events-none z-0" />
 
+      <div className="relative z-50 pt-4">
+        <FloatingHeader />
+      </div>
+
       <main className="flex flex-col relative z-10">
         {/* Hero Section */}
         <section className="relative px-6 py-12 md:px-12 md:py-20 border-brutal-b bg-transparent overflow-hidden mt-6">
