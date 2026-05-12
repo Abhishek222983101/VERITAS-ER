@@ -1,0 +1,10 @@
+pub const CONFIG_SEED: &[u8] = b"config";
+pub const QUESTION_SEED: &[u8] = b"question";
+pub const AGENT_SEED: &[u8] = b"agent";
+pub const VOTE_COMMIT_SEED: &[u8] = b"vote_commit";
+pub const VOTE_REVEAL_SEED: &[u8] = b"vote_reveal";
+pub const HUMAN_SEED: &[u8] = b"human";
+pub const AGENT_REGISTRY_SEED: &[u8] = b"agent_registry";
+pub const PERMISSION_SEED: &[u8] = b"permission";
+pub const TEE_VALIDATOR: &str = "FnE6VJT5QNZdedZPnCoLsARgBwoE6DeJNJBs2H1gySXA";
+pub const ER_VALIDATOR: &str = "MAS1Dt9qreoRMQ14YQuhg8UTZMMzDdKhmkZMECCzk57";

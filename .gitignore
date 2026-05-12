@@ -1,0 +1,13 @@
+.env
+.env.local
+keypairs/
+*.json-keypair
+node_modules/
+.next/
+target/
+test-ledger/
+.DS_Store
+.anchor/
+.yarn/
+yarn.lock
+pnpm-lock.yaml

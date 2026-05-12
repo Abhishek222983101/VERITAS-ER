@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface MetricCardData {
+  key: string;
   title: string;
   description: string;
   initialScore: number;
@@ -17,7 +18,7 @@ interface MetricsScoreCardsProps {
 
 export function MetricsScoreCards({ data }: MetricsScoreCardsProps) {
   const [scores, setScores] = useState<Record<string, number>>(
-    Object.fromEntries(data.map((d) => [d.title, d.initialScore]))
+    Object.fromEntries(data.map((d) => [d.key, d.initialScore]))
   );
 
   const getConfidenceColor = (score: number) => {
@@ -29,15 +30,15 @@ export function MetricsScoreCards({ data }: MetricsScoreCardsProps) {
   return (
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
       {data.map((card) => {
-        const score = scores[card.title] ?? card.initialScore;
+        const score = scores[card.key] ?? card.initialScore;
         return (
           <div
-            key={card.title}
+            key={card.key}
             className="bg-white border-brutal shadow-brutal p-6 md:p-8 flex flex-col gap-4 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
             onClick={() =>
               setScores((prev) => ({
                 ...prev,
-                [card.title]: Math.floor(Math.random() * 100),
+                [card.key]: Math.floor(Math.random() * 100),
               }))
             }
           >

@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Bricolage_Grotesque, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { FloatingHeader } from "@/components/ui/floating-header";
+import { WalletProvider } from "@/components/providers/wallet-provider";
+import { AnchorProviderWrapper } from "@/components/providers/anchor-provider";
+import { BufferPolyfill } from "@/components/providers/buffer-polyfill";
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-heading",
@@ -16,9 +19,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "VERITAS-ER | Decentralized Intelligence Verification Engine",
+  title: "VERITAS | Private Oracle Intelligence",
   description:
-    "AI swarm oracle for prediction markets — powered by Solana + MagicBlock. Human-backed agents, commit-reveal voting, verifiable on-chain settlement.",
+    "Autonomous AI oracle protocol — 5 specialized agents cryptographically vote to determine truth. Powered by Solana + MagicBlock.",
 };
 
 export default function RootLayout({
@@ -31,10 +34,15 @@ export default function RootLayout({
       <body
         className={`${bricolage.variable} ${jetbrainsMono.variable} antialiased selection:bg-black selection:text-[#A7F3D0]`}
       >
-        <div className="relative z-50 pt-4">
-          <FloatingHeader />
-        </div>
-        {children}
+        <WalletProvider>
+          <AnchorProviderWrapper>
+            <BufferPolyfill />
+            <div className="relative z-50 pt-4">
+              <FloatingHeader />
+            </div>
+            {children}
+          </AnchorProviderWrapper>
+        </WalletProvider>
       </body>
     </html>
   );

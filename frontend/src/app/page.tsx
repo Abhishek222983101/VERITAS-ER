@@ -1,27 +1,39 @@
-import { ArrowRight, Activity, Brain, Cpu, Vote, ShieldCheck, Zap } from "lucide-react";
+"use client";
+
+import { ArrowRight, Activity, Brain, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import HeroText from "@/components/ui/hero-shutter-text";
 import { MetricsScoreCards } from "@/components/ui/metrics-score-cards";
 import { GradientHeading } from "@/components/ui/gradient-heading";
 import { GridAnimation } from "@/components/ui/mouse-following-line";
-import { AGENTS, TECH_STACK } from "@/lib/data";
+import { TECH_STACK } from "@/lib/data";
+import { useAgents } from "@/hooks/use-on-chain";
 
 export default function Home() {
-  const agentCards = AGENTS.map((a) => ({
-    title: a.name,
-    description: a.personality,
-    initialScore: a.reputation,
-    icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />,
-    color: a.color,
-  }));
+  const { agents, loading: agentsLoading } = useAgents();
+
+  const agentCards = agents.length > 0 
+    ? agents
+        .filter((a) => !a.name.startsWith("Unknown") && a.name !== a.wallet.toBase58().slice(0, 8))
+        .map((a) => ({
+          title: a.name,
+          key: a.wallet.toBase58(),
+          description: `Reputation: ${a.reputation} | Accuracy: ${a.accuracy}%`,
+          initialScore: Math.min(Math.round(a.reputation / 10), 100),
+          icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />,
+          color: a.color,
+        }))
+    : [
+    { key: "oracle-alpha", title: "Oracle Alpha", description: "Analytical, cites numbers, methodical", initialScore: 92, icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />, color: "#A7F3D0" },
+    { key: "skeptic-beta", title: "Skeptic Beta", description: "Contrarian, plays devil's advocate", initialScore: 87, icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />, color: "#FF6B6B" },
+    { key: "signal-gamma", title: "Signal Gamma", description: "Pattern recognition, Bayesian thinker", initialScore: 95, icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />, color: "#FFD700" },
+    { key: "risk-delta", title: "Risk Delta", description: "Conservative, risk-averse, paranoid", initialScore: 78, icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />, color: "#FEF7CD" },
+    { key: "synthesis-epsilon", title: "Synthesis Epsilon", description: "Mediator, synthesizer, seeks consensus", initialScore: 90, icon: <Brain className="w-8 h-8 stroke-black" strokeWidth={3} />, color: "#9945FF" },
+  ];
 
   return (
     <div className="min-h-screen bg-cream font-mono relative bg-noise overflow-x-hidden">
       <div className="fixed inset-0 bg-dot-pattern opacity-[0.06] pointer-events-none z-0" />
-
-      <div className="relative z-50 pt-4">
-        <FloatingHeader />
-      </div>
 
       <main className="flex flex-col relative z-10">
         {/* Hero Section */}
@@ -31,7 +43,7 @@ export default function Home() {
 
             <div className="flex flex-col justify-center z-10 w-full overflow-hidden">
               <div className="mb-0 w-fit relative mt-8 md:mt-0">
-                <HeroText text="VERITAS-ER" className="items-start" />
+                <HeroText text="VERITAS" className="items-start" />
               </div>
 
               <GradientHeading
@@ -40,19 +52,19 @@ export default function Home() {
                 weight="black"
                 className="mb-8 font-heading mt-2"
               >
-                DECENTRALIZED INTELLIGENCE VERIFICATION ENGINE
+                PRIVATE ORACLE INTELLIGENCE
               </GradientHeading>
 
               <p className="font-mono text-xl md:text-2xl max-w-xl mb-10 leading-snug font-semibold text-neutral-800 bg-white/50 backdrop-blur-sm p-4 border-l-4 border-black">
-                AI swarm oracle for prediction markets — human-backed agents, commit-reveal voting, verifiable on-chain settlement. Powered by Solana + MagicBlock.
+                AI oracle protocol — human-backed agents, VRF committee selection, commit-reveal voting, verifiable on-chain resolution. Powered by Solana + MagicBlock.
               </p>
 
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href="/markets"
+                  href="/questions"
                   className="inline-flex items-center justify-center gap-3 bg-solana-purple text-white brutal-btn px-8 py-5 text-xl md:text-2xl uppercase whitespace-nowrap hover:bg-black hover:text-white"
                 >
-                  Explore Markets <ArrowRight className="w-6 h-6 md:w-7 md:h-7" strokeWidth={3} />
+                  Explore Questions <ArrowRight className="w-6 h-6 md:w-7 md:h-7" strokeWidth={3} />
                 </Link>
                 <Link
                   href="/verify"
@@ -71,7 +83,7 @@ export default function Home() {
                       <div className="w-3 h-3 rounded-full bg-lime-green border-2 border-black animate-pulse" />
                       <span className="font-heading font-black uppercase text-sm tracking-tight">Live Resolution</span>
                     </div>
-                    <p className="font-mono text-sm font-bold">Market: &quot;Will SOL reach $500?&quot;</p>
+                    <p className="font-mono text-sm font-bold">Question: &quot;Will SOL reach $500?&quot;</p>
                   </div>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 bg-lime-green/20 border-2 border-black">
@@ -111,24 +123,24 @@ export default function Home() {
         <section className="px-6 py-20 md:px-12 md:py-28 bg-[#111] text-white border-brutal-b relative bg-grid-pattern-dark">
           <div className="max-w-5xl mx-auto">
             <GradientHeading variant="lime" size="xl" className="text-center mb-16">
-              HOW VERITAS-ER WORKS
+              HOW VERITAS WORKS
             </GradientHeading>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
               <div>
                 <h3 className="font-heading text-3xl font-black text-solana-purple mb-4 border-b-4 border-white pb-2 uppercase tracking-tight">
-                  01. Create Market
+                  01. Ask a Question
                 </h3>
                 <p className="font-mono text-lg text-gray-300">
-                  Anyone creates a prediction market with YES/NO outcomes. SPL tokens are minted, the market PDA is delegated to MagicBlock ER for zero-fee real-time trading.
+                  Anyone submits a yes/no question to the oracle with a query fee. The question PDA is created on-chain and delegated to MagicBlock ER for real-time state updates.
                 </p>
               </div>
               <div>
                 <h3 className="font-heading text-3xl font-black text-cyber-yellow mb-4 border-b-4 border-white pb-2 uppercase tracking-tight">
-                  02. Agents Research
+                  02. VRF Committee
                 </h3>
                 <p className="font-mono text-lg text-gray-300">
-                  When a market deadline hits, VRF selects a random committee of AI agents. Each independently searches for evidence, forms an opinion, and commits a sealed vote.
+                  MagicBlock VRF selects a provably random committee of AI agents. Each independently researches the question using web search, on-chain data, and reasoning models.
                 </p>
               </div>
               <div>
@@ -136,15 +148,15 @@ export default function Home() {
                   03. Commit-Reveal Vote
                 </h3>
                 <p className="font-mono text-lg text-gray-300">
-                  Agents commit sha256 hashes on PER (TEE-encrypted, invisible). Then reveal votes on the Solana base layer. If 70%+ consensus — market resolves. If not — agents debate and re-vote.
+                  Agents commit sha256 hashes on PER (TEE-encrypted, invisible). Then reveal votes on the Solana base layer. If 70%+ consensus — the question is resolved. If not — agents discuss and re-vote.
                 </p>
               </div>
               <div>
                 <h3 className="font-heading text-3xl font-black text-hot-coral mb-4 border-b-4 border-white pb-2 uppercase tracking-tight">
-                  04. Settle On-Chain
+                  04. Resolve On-Chain
                 </h3>
                 <p className="font-mono text-lg text-gray-300">
-                  Winning tokens are burned for proportional SOL payouts. Agent reputations are updated on-chain. Everything is auditable — votes, evidence, and reasoning.
+                  The oracle answer is written on-chain with confidence score. Agent reputations are updated. Everything is auditable — votes, evidence, and reasoning hashes.
                 </p>
               </div>
             </div>
@@ -208,10 +220,10 @@ export default function Home() {
               TRUST MINIMIZED. TRUTH MAXIMIZED.
             </GradientHeading>
             <Link
-              href="/markets"
+              href="/questions"
               className="inline-flex items-center gap-4 bg-white text-black brutal-btn hover:bg-lime-green hover:text-black border-white hover:border-black px-10 py-6 text-2xl md:text-4xl uppercase"
             >
-              Explore Markets <ArrowRight className="w-10 h-10" strokeWidth={3} />
+              Explore Questions <ArrowRight className="w-10 h-10" strokeWidth={3} />
             </Link>
           </div>
         </section>
@@ -223,11 +235,11 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <Activity className="size-8 stroke-[3px] text-solana-green" />
                 <div className="font-heading text-3xl font-black uppercase tracking-tighter text-white">
-                  VERITAS-ER
+                  VERITAS
                 </div>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-6 font-mono text-sm font-bold uppercase tracking-widest text-white/70">
-                <a href="/markets" className="hover:text-lime-green transition-colors">Markets</a>
+                <a href="/questions" className="hover:text-lime-green transition-colors">Questions</a>
                 <a href="/oracle" className="hover:text-cyber-yellow transition-colors">Oracle</a>
                 <a href="/dashboard" className="hover:text-hot-coral transition-colors">Dashboard</a>
               </div>
@@ -245,7 +257,7 @@ export default function Home() {
             </div>
 
             <div className="absolute bottom-4 left-0 right-0 text-center text-[10px] font-mono font-bold uppercase tracking-widest text-white/30 z-10">
-              Copyright &copy; {new Date().getFullYear()} VERITAS-ER. All rights reserved.
+              Copyright &copy; {new Date().getFullYear()}                   VERITAS. All rights reserved.
             </div>
           </footer>
         </div>

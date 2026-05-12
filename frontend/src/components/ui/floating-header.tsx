@@ -13,14 +13,16 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { ClientOnly } from "@/components/providers/client-only";
 
 export function FloatingHeader() {
   const [open, setOpen] = React.useState(false);
 
   const links = [
-    { label: "Markets", href: "/markets" },
+    { label: "Questions", href: "/questions" },
     { label: "Oracle", href: "/oracle" },
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Stack", href: "/stack" },
     { label: "Verify", href: "/verify" },
   ];
 
@@ -59,15 +61,26 @@ export function FloatingHeader() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/create">
+          <Link href="/ask">
             <Button
               size="lg"
               variant="solana"
               className="hidden lg:flex text-lg border-2 h-14 px-8"
             >
-              Create Market
+              Ask
             </Button>
           </Link>
+          <ClientOnly
+            fallback={
+              <div className="hidden lg:flex h-14 px-6 border-4 border-black bg-solana-purple text-white font-heading font-black uppercase items-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+                Connect Wallet
+              </div>
+            }
+          >
+            <div className="hidden lg:block [&_.wallet-adapter-button]:font-heading [&_.wallet-adapter-button]:font-black [&_.wallet-adapter-button]:uppercase [&_.wallet-adapter-button]:tracking-wider [&_.wallet-adapter-button]:h-14 [&_.wallet-adapter-button]:border-4 [&_.wallet-adapter-button]:border-black [&_.wallet-adapter-button]:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] [&_.wallet-adapter-button]:rounded-none [&_.wallet-adapter-button]:bg-solana-purple [&_.wallet-adapter-button]:text-white [&_.wallet-adapter-button]:hover_bg-black [&_.wallet-adapter-button]:hover_text-solana-purple [&_.wallet-adapter-button-trigger]:h-14 [&_.wallet-adapter-button-trigger]:border-4 [&_.wallet-adapter-button-trigger]:border-black [&_.wallet-adapter-button-trigger]:rounded-none">
+              <WalletMultiButton />
+            </div>
+          </ClientOnly>
           <Sheet open={open} onOpenChange={setOpen}>
             <Button
               size="icon"
@@ -105,13 +118,18 @@ export function FloatingHeader() {
                 ))}
               </div>
               <SheetFooter className="gap-4">
+                <ClientOnly>
+                  <div className="[&_.wallet-adapter-button]:font-heading [&_.wallet-adapter-button]:font-black [&_.wallet-adapter-button]:uppercase [&_.wallet-adapter-button]:w-full [&_.wallet-adapter-button]:border-4 [&_.wallet-adapter-button]:border-black [&_.wallet-adapter-button]:rounded-none">
+                    <WalletMultiButton />
+                  </div>
+                </ClientOnly>
                 <Link
-                  href="/create"
+                  href="/ask"
                   className="w-full"
                   onClick={() => setOpen(false)}
                 >
                   <Button className="w-full" size="lg" variant="solana">
-                    Create Market
+                    Ask a Question
                   </Button>
                 </Link>
               </SheetFooter>

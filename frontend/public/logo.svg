@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#000000"/>
+  <rect x="8" y="8" width="496" height="496" fill="none" stroke="#A7F3D0" stroke-width="4"/>
+  
+  <!-- Eye shape -->
+  <ellipse cx="256" cy="240" rx="140" ry="90" fill="none" stroke="#A7F3D0" stroke-width="6"/>
+  
+  <!-- Eye pupil - shield -->
+  <circle cx="256" cy="240" r="50" fill="none" stroke="#9945FF" stroke-width="5"/>
+  <path d="M256 195 L230 240 L256 275 L282 240 Z" fill="#9945FF" stroke="#A7F3D0" stroke-width="3"/>
+  
+  <!-- Hash lines through eye representing commit-reveal -->
+  <line x1="180" y1="240" x2="200" y2="240" stroke="#9945FF" stroke-width="3" stroke-dasharray="6,4"/>
+  <line x1="312" y1="240" x2="332" y2="240" stroke="#9945FF" stroke-width="3" stroke-dasharray="6,4"/>
+  
+  <!-- VRF rays -->
+  <line x1="256" y1="140" x2="256" y2="160" stroke="#FFD700" stroke-width="2"/>
+  <line x1="196" y1="165" x2="210" y2="178" stroke="#FFD700" stroke-width="2"/>
+  <line x1="316" y1="165" x2="302" y2="178" stroke="#FFD700" stroke-width="2"/>
+  
+  <!-- Text -->
+  <text x="256" y="390" text-anchor="middle" font-family="monospace" font-weight="900" font-size="56" fill="#A7F3D0" letter-spacing="12">VERITAS</text>
+  <text x="256" y="430" text-anchor="middle" font-family="monospace" font-weight="700" font-size="16" fill="#9945FF" letter-spacing="6">TRUST LAYER FOR AI</text>
+  
+  <!-- Bottom bar -->
+  <rect x="160" y="455" width="192" height="3" fill="#A7F3D0"/>
+</svg>

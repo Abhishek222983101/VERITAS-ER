@@ -1,0 +1,13 @@
+{
+  "1": {
+    "phase": "commit",
+    "resolvedResult": null,
+    "votes": {}
+  },
+  "5": {
+    "phase": "commit",
+    "resolvedResult": null,
+    "votes": {},
+    "failureCount": 6
+  }
+}

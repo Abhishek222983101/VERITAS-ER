@@ -35,6 +35,7 @@ declare module "lucide-react" {
   export const Zap: Icon;
   export const X: Icon;
   export const AlertTriangle: Icon;
+  export const AlertCircle: Icon;
   export const DollarSign: Icon;
   export const ExternalLink: Icon;
   export const Eye: Icon;
@@ -42,4 +43,16 @@ declare module "lucide-react" {
   export const FileQuestion: Icon;
   export const Tag: Icon;
   export const Type: Icon;
+  export const Loader2: Icon;
+  export const LoaderCircle: Icon;
+  export const Info: Icon;
+  export const Lock: Icon;
+  export const Globe: Icon;
+  export const XCircle: Icon;
+  export const Server: Icon;
+  export const CheckCircle: Icon;
+  export const HelpCircle: Icon;
+  export const ActivityIcon: Icon;
+  export const Network: Icon;
+  export const Database: Icon;
 }

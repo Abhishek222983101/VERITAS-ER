@@ -1,0 +1,30 @@
+[package]
+name = "veritas-oracle"
+version = "0.1.0"
+description = "VERITAS Private Oracle Intelligence - Autonomous AI oracle with commit-reveal voting"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "veritas_oracle"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+anchor-debug = []
+custom-heap = []
+custom-panic = []
+
+[dependencies]
+anchor-lang = { version = "0.32.1", features = ["init-if-needed"] }
+anchor-spl = { version = "0.32.1", features = ["token", "mint", "associated_token"] }
+ephemeral-rollups-sdk = { version = "0.8.0", features = ["anchor", "access-control", "disable-realloc"] }
+ephemeral-vrf-sdk = { version = "0.2.1", features = ["anchor"] }
+sha2 = "0.10"
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))'] }
