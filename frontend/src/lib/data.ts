@@ -105,6 +105,20 @@ export const AGENTS: Agent[] = [
 
 export const MARKETS: Market[] = [
   {
+    id: "will-solana-hit-$400",
+    question: "Will Solana hit $400 by the end of 2026?",
+    outcomes: ["YES", "NO"],
+    deadline: "2026-12-31T23:59:59Z",
+    yesPool: 0,
+    noPool: 0,
+    yesPrice: 0.5,
+    noPrice: 0.5,
+    status: "active",
+    totalVolume: 0,
+    category: "Crypto",
+    agentInsights: [],
+  },
+  {
     id: "btc-150k",
     question: "Will Bitcoin hit $150K by Q2 2026?",
     outcomes: ["YES", "NO"],
