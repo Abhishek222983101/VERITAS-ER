@@ -955,9 +955,23 @@ export default function QuestionDetailPage() {
                       {privateRewardLoading ? "Sending..." : `Send Private Reward (${question.result !== null ? (question.result === 0 ? "YES" : question.result === 1 ? "NO" : "UNSURE") : "?"})`}
                     </button>
                     {privateRewardTxHash && (
-                      <div className="p-2 bg-lime-green/10 border-2 border-lime-green">
+                      <div className="p-2 bg-lime-green/10 border-2 border-lime-green space-y-1.5">
                         <p className="font-mono text-[10px] text-lime-green font-bold">Private Payment Sent!</p>
                         <p className="font-mono text-[9px] text-black/40">Amount and recipient are encrypted on Solana Explorer</p>
+                        <div className="space-y-1">
+                          {privateRewardTxHashes.map((hash, i) => (
+                            <a
+                              key={hash}
+                              href={`https://explorer.solana.com/tx/${hash}?cluster=${CLUSTER}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="font-mono text-[9px] text-solana-purple hover:underline break-all flex items-center gap-1"
+                            >
+                              <ExternalLink className="w-2.5 h-2.5 shrink-0" />
+                              TX {i + 1}: {hash.slice(0, 16)}...
+                            </a>
+                          ))}
+                        </div>
                       </div>
                     )}
                     {privateRewardError && <p className="font-mono text-[10px] text-hot-coral break-all">Error: {privateRewardError}</p>}
@@ -999,7 +1013,7 @@ export default function QuestionDetailPage() {
             />
 
             <div className="space-y-4">
-              <LiveTerminal questionId={id} />
+              <LiveTerminal questionId={id} question={question} />
 
               <div className="bg-black text-white border-brutal p-6 bg-grid-pattern-dark">
                 <h3 className="font-heading font-black uppercase tracking-tight mb-5 text-lime-green flex items-center gap-2">

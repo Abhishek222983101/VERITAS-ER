@@ -225,7 +225,12 @@ function ConfidenceRing({ value }: { value: number }) {
   );
 }
 
-export function LiveTerminal({ questionId }: { questionId?: number }) {
+interface LiveTerminalProps {
+  questionId?: number;
+  question?: any;
+}
+
+export function LiveTerminal({ questionId, question }: LiveTerminalProps) {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [connected, setConnected] = useState(false);
   const [showRaw, setShowRaw] = useState(false);
@@ -387,6 +392,48 @@ export function LiveTerminal({ questionId }: { questionId?: number }) {
               <Cpu className="w-3 h-3" />
               Agent Activity
             </p>
+
+            {/* Fallback: show on-chain committee data when no real-time events */}
+            {filtered.length === 0 && question && question.committee && question.committee.length > 0 && (
+              <div className="mb-3 p-3 bg-white/[0.03] border border-white/10">
+                <p className="font-mono text-[9px] text-white/30 mb-2">
+                  {question.status >= 5
+                    ? "Question resolved — no live activity. Committee votes from on-chain data:"
+                    : connected
+                    ? "Orchestrator polls every 30s. Waiting for next cycle..."
+                    : "Reconnecting to orchestrator..."}
+                </p>
+                <div className="space-y-2">
+                  {question.committee.map((wallet: any, idx: number) => {
+                    const name = Object.entries({
+                      "45ZRaVaPtMTuQjZPUnVP3L9rHAV7g4ZgbzPDePYpoLXJ": "Oracle Alpha",
+                      "EyLoSArbjG1dZgwtwK8X13x4YZw8LZ36KHM8cs13XdXR": "Skeptic Beta",
+                      "2c6xz6Uk5zczG4QbgzB1cVjRvZjeFmemL4taQ82vrnvD": "Signal Gamma",
+                      "ByanixcaRCn8UY2z2ZjVSaEjc6yREpfkdh3RU3yRkb3k": "Risk Delta",
+                      "5C9KWNurRh6sVmqSfPcfTXaEs5kZdAkyAYRB4tYDbmiw": "Synthesis Epsilon",
+                    }).find(([k]) => k === wallet.toBaseCount?.() || k === wallet.toBase58?.() || k === wallet);
+                    const agentName = name ? name[1] : `Agent ${idx + 1}`;
+                    const colors: Record<string, string> = {
+                      "Oracle Alpha": "#A7F3D0",
+                      "Skeptic Beta": "#FF6B6B",
+                      "Signal Gamma": "#FFD700",
+                      "Risk Delta": "#FEF7CD",
+                      "Synthesis Epsilon": "#9945FF",
+                    };
+                    return (
+                      <div key={idx} className="flex items-center gap-2">
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: colors[agentName] || "#A7F3D0" }} />
+                        <span className="font-mono text-[9px] text-white/50">{agentName}</span>
+                        <span className="font-mono text-[8px] text-white/30 ml-auto">
+                          {question.status >= 5 ? "Voted on-chain" : "Committee member"}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="space-y-3">
               {agentActivities.map((agent) => (
                 <div
@@ -474,8 +521,14 @@ export function LiveTerminal({ questionId }: { questionId?: number }) {
             <div className="space-y-1 max-h-24 overflow-y-auto" style={{ scrollbarWidth: "thin", scrollbarColor: "#333 transparent" }}>
               {filtered.length === 0 ? (
                 <div className="flex items-center gap-2 py-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-white/10 animate-pulse" />
-                  <span className="font-mono text-[9px] text-white/20">Waiting for events...</span>
+                  <div className={`w-1.5 h-1.5 rounded-full animate-pulse ${connected ? "bg-cyber-yellow/50" : "bg-white/10"}`} />
+                  <span className="font-mono text-[9px] text-white/30">
+                    {question && question.status >= 5
+                      ? "Question resolved — historical data shown above"
+                      : connected
+                      ? "Waiting for next orchestrator cycle (polls every 30s)..."
+                      : "Connecting to orchestrator..."}
+                  </span>
                 </div>
               ) : (
                 filtered.slice(-8).map((log, i) => {
